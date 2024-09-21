@@ -139,15 +139,15 @@ function mouseClicked() {
     }
     // add protections for turn and turn off mouseclicked when turn is running.
 }
-let shift = 0;
+let shift;
 function moveMarble(position) {
     let marbles = board[position];
-    let netMove = position + marbles + shift
+    let netMove = position + marbles
     if (board[position] > 1) { 
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
-
+            // console.log(shift);
             if (p1Turn && i != 13) {
                 board[(i)% 14]++;
             } else if (!p1Turn && i != 6) {
@@ -158,12 +158,30 @@ function moveMarble(position) {
             }
         }
     } else {
+        captureOpp(position);
         p1Turn = !p1Turn;
     }
     console.log(board);
     console.log(p1Turn);
-    netMove = (position + marbles + shift) % 14
-    console.log("pos" + " " + position + "marbles" + " " + marbles +"shift" + " " + shift);
+    netMove = (position + marbles + shift) % 14;
+    console.log("pos " + position + " marbles " + marbles +" shift " + shift);
+    goAgain(netMove);
+    console.log('i should stop');
+}
+
+function captureOpp(pos) {
+    if (board[pos] == 1 && p1Turn && (0 <= pos && pos <= 5)) {
+        board[6] += 1 + board[14 - pos];
+        board[pos] = 0;
+        board[14 - pos] = 0;
+    } else if (board[pos] == 1 && !p1Turn && (7 <= pos && pos <= 12)) {
+        board[13] += 1 + board[14 - pos];
+        board[pos] = 0;
+        board[14 - pos] = 0;
+    }
+}
+
+function goAgain(netMove) {
     if (netMove != 6 && p1Turn) {
         console.log('first goal not reached')
         moveMarble(netMove);
@@ -171,7 +189,6 @@ function moveMarble(position) {
         console.log('second goal not reached')
         moveMarble(netMove);
     }
-    console.log('i should stop');
 }
 
 function checkSpot(position) {
