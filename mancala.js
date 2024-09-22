@@ -158,7 +158,7 @@ function moveMarble(position) {
             }
         }
     } else {
-        captureOpp(position);
+        //captureOpp(position);
         p1Turn = !p1Turn;
     }
     console.log(board);
