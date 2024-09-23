@@ -17,6 +17,7 @@ function setup() {
     drawBoard();
     createPlayers();
     makeHoleArr();
+    drawMarbles(0,4);
 }
 
 /** This function redraws the sketch multiple times a second. */
@@ -59,6 +60,15 @@ class Hole {
             }
         }
     }
+    getX() {
+        return this.x;
+    }
+    getY() {
+        return this.y;
+    }
+    getD() {
+        return this.d;
+    }
 }
 
 function createPlayers() {
@@ -93,8 +103,21 @@ function drawBase() {
     rect(baseX, baseY, baseWidth, baseHeight, 15);
 }
 
-
-
+function drawMarbles(hole, numMarbles) {
+    let red = [255, 0, 0];
+    let green = [0, 255, 0];
+    let blue = [0, 0, 255];
+    let sectionWidth = baseWidth / 8;
+    let selectHole = holeArr[hole];
+    let y;
+    let x;
+    for (let i = 0; i < numMarbles; i++) {
+        fill(255,0,0);
+        y = (Math.random()*(selectHole.getD()/2))+selectHole.getY();
+        x = (Math.random()*(selectHole.getD()/2))+selectHole.getX();
+        circle(x, y, selectHole.getD()* .3);
+    }
+}
 function topRow() {
     let sectionWidth = baseWidth / 8;
     let holeX = baseX + sectionWidth * .5;
@@ -143,17 +166,17 @@ let shift = 0;
 function moveMarble(position) {
     let marbles = board[position];
     let netMove = position + marbles + shift
-    if (board[position] > 1) { 
+    if (board[position] > 1) {
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
 
             if (p1Turn && i != 13) {
-                board[(i)% 14]++;
+                board[(i) % 14]++;
             } else if (!p1Turn && i != 6) {
                 board[(i) % 14]++;
             } else {
-                shift ++;
+                shift++;
                 netMove++;
             }
         }
@@ -163,12 +186,10 @@ function moveMarble(position) {
     console.log(board);
     console.log(p1Turn);
     netMove = (position + marbles + shift) % 14
-    console.log("pos" + " " + position + "marbles" + " " + marbles +"shift" + " " + shift);
+    console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
     if (netMove != 6 && p1Turn) {
-        console.log('first goal not reached')
         moveMarble(netMove);
     } else if (netMove != 13 && !p1Turn) {
-        console.log('second goal not reached')
         moveMarble(netMove);
     }
     console.log('i should stop');
