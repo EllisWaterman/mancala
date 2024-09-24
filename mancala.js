@@ -17,14 +17,16 @@ function setup() {
     drawBoard();
     createPlayers();
     makeHoleArr();
-    drawMarbles(0,4);
+    for (let m = 0; m <= holeArr.length; m++) {
+        drawMarbles(m, holeArr[m]);
+    }
+    // drawMarbles(0,4);
 }
 
 /** This function redraws the sketch multiple times a second. */
 function draw() {
 
 }
-
 class Player {
     constructor(p1) {
         this.score = 0;
@@ -92,6 +94,7 @@ function drawBoard() {
     drawBase();
     drawHoles();
     drawGoals();
+    
 }
 function drawHoles() {
     topRow();
@@ -112,10 +115,10 @@ function drawMarbles(hole, numMarbles) {
     let y;
     let x;
     for (let i = 0; i < numMarbles; i++) {
-        fill(255,0,0);
-        y = (Math.random()*(selectHole.getD()/2))+selectHole.getY();
-        x = (Math.random()*(selectHole.getD()/2))+selectHole.getX();
-        circle(x, y, selectHole.getD()* .3);
+        fill(255, 0, 0);
+        y = ((Math.random() * 2 - 1) * ((selectHole.getD() / 2) - (selectHole.getD() * .15))) + selectHole.getY();
+        x = ((Math.random() * 2 - 1) * (Math.sqrt((selectHole.getD() / 2) ** 2 - (y - selectHole.getY()) ** 2) - (selectHole.getD() * .15))) + selectHole.getX()
+        circle(x, y, selectHole.getD() * .3);
     }
 }
 function topRow() {
@@ -191,8 +194,9 @@ function moveMarble(position) {
         moveMarble(netMove);
     } else if (netMove != 13 && !p1Turn) {
         moveMarble(netMove);
+    } else {
+        console.log('i should stop');
     }
-    console.log('i should stop');
 }
 
 function checkSpot(position) {
