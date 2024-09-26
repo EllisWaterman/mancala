@@ -5,7 +5,7 @@ class Player {
     }
     playerTurn(position) {
         if (checkSpot(position)) {
-            moveMarble(position);
+            turn(position);
         }
 
         //playerTurn(p1turn);

@@ -18,7 +18,7 @@ function setup() {
     createPlayers();
     makeHoleArr();
     drawMarbles();
-    
+
     // drawMarbles(0,4);
 }
 
@@ -28,7 +28,7 @@ function draw() {
 }
 
 function makeHoleArr() {
-    
+
     for (let i = 0; i < bottomHoles.length; i++) {
         holeArr.push(bottomHoles[i]);
 
@@ -47,36 +47,52 @@ function mouseClicked() {
     // add protections for turn and turn off mouseclicked when turn is running.
 }
 
-let shift = 0;
-function moveMarble(position) {
+let shift;
+function turn(position) {
     let marbles = board[position];
     let netMove = position + marbles
     if (board[position] > 1) {
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
-
-            if (p1Turn && i != 13) {
-                board[(i) % 14]++;
-            } else if (!p1Turn && i != 6) {
-                board[(i) % 14]++;
-            } else {
-                shift++;
-                netMove++;
-            }
+            setTimeout(moveMarble(i, netMove), 5000);
+            drawMarbles();
         }
+        console.log(board);
+        console.log('finished')
+        netMove = (position + marbles + shift) % 14
+        console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
+        goAgain(netMove);
     } else {
         p1Turn = !p1Turn;
+        console.log("other players turn")
+        console.log(p1Turn);
     }
-    drawMarbles();
-    console.log(board);
-    console.log(p1Turn);
-    netMove = (position + marbles + shift) % 14
-    console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
+
+    //console.log(board);
+    
+
+}
+
+function moveMarble(i, netMove) {
+    if (p1Turn && i != 13) {
+        board[(i) % 14]++;
+        console.log("marble placed at hole " + i);
+    } else if (!p1Turn && i != 6) {
+        board[(i) % 14]++;
+        console.log("marble placed at hole " + i);
+    } else {
+        shift++;
+        netMove++;
+        console.log("Goal skipped");
+    }
+}
+
+function goAgain(netMove) {
     if (netMove != 6 && p1Turn) {
-        moveMarble(netMove);
+        turn(netMove);
     } else if (netMove != 13 && !p1Turn) {
-        moveMarble(netMove);
+        turn(netMove);
     } else {
         console.log('i should stop');
     }

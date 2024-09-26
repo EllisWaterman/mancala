@@ -27,11 +27,12 @@ function drawMarble(hole, numMarbles) {
     let red = [255, 0, 0];
     let green = [0, 255, 0];
     let blue = [0, 0, 255];
+    let colors = [red, blue, green];
     let selectHole = holeArr[hole];
     let y;
     let x;
     for (let i = 0; i < numMarbles; i++) {
-        fill(red);
+        fill(colors[i % (colors.length)]);
         noStroke();
         y = ((Math.random() * 2 - 1) * ((selectHole.getD() / 2) - (selectHole.getD() * .25))) + selectHole.getY();
         x = ((Math.random() * 2 - 1) * (Math.sqrt((selectHole.getD() / 2) ** 2 - (y - selectHole.getY()) ** 2) - (selectHole.getD() * .15))) + selectHole.getX()
