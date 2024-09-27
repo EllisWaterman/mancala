@@ -5,52 +5,14 @@ function drawBoard() {
 
 }
 
-function drawHoles() {
-    topRow();
-    bottomRow();
-}
-
 function drawBase() {
     fill(218, 109, 66);
     rect(baseX, baseY, baseWidth, baseHeight, 15);
 }
 
-function drawMarbles() {
-    drawHoles();
-    for (let m = 0; m < board.length; m++) {
-        drawMarble(m, board[m]);
-        drawNumMarbles(m, board[m]);
-    }
-}
-
-function drawMarble(hole, numMarbles) {
-    let red = [255, 0, 0];
-    let green = [0, 255, 0];
-    let blue = [0, 0, 255];
-    let colors = [red, blue, green];
-    let selectHole = holeArr[hole];
-    let y;
-    let x;
-    for (let i = 0; i < numMarbles; i++) {
-        fill(colors[i % (colors.length)]);
-        noStroke();
-        y = ((Math.random() * 2 - 1) * ((selectHole.getD() / 2) - (selectHole.getD() * .25))) + selectHole.getY();
-        x = ((Math.random() * 2 - 1) * (Math.sqrt((selectHole.getD() / 2) ** 2 - (y - selectHole.getY()) ** 2) - (selectHole.getD() * .15))) + selectHole.getX()
-        circle(x, y, selectHole.getD() * .3);
-
-
-    }
-
-}
-
-function drawNumMarbles(hole, numMarbles) {
-    let selectHole = holeArr[hole];
-    fill('white');
-    stroke("black");
-    strokeWeight(5)
-    textSize(30);
-    textAlign(CENTER, CENTER);
-    text(numMarbles, selectHole.getX(), selectHole.getY());
+function drawHoles() {
+    topRow();
+    bottomRow();
 }
 
 function topRow() {
@@ -87,6 +49,41 @@ function drawGoals() {
         rect(goalX, baseY + baseHeight / 4, sectionWidth * .8, baseHeight * .5);
         goalX += sectionWidth * 7;
     }
+}
+
+function drawMarbles() {
+    drawHoles();
+    for (let m = 0; m < board.length; m++) {
+        drawMarble(m, board[m]);
+        drawNumMarbles(m, board[m]);
+    }
+}
+
+function drawMarble(hole, numMarbles) {
+    let red = [255, 0, 0];
+    let green = [0, 255, 0];
+    let blue = [0, 0, 255];
+    let colors = [red, blue, green];
+    let selectHole = holeArr[hole];
+    let y;
+    let x;
+    for (let i = 0; i < numMarbles; i++) {
+        fill(colors[i % (colors.length)]);
+        noStroke();
+        y = ((Math.random() * 2 - 1) * ((selectHole.getD() / 2) - (selectHole.getD() * .25))) + selectHole.getY();
+        x = ((Math.random() * 2 - 1) * (Math.sqrt((selectHole.getD() / 2) ** 2 - (y - selectHole.getY()) ** 2) - (selectHole.getD() * .15))) + selectHole.getX();
+        circle(x, y, selectHole.getD() * .3);
+    }
+}
+
+function drawNumMarbles(hole, numMarbles) {
+    let selectHole = holeArr[hole];
+    fill('white');
+    stroke("black");
+    strokeWeight(5)
+    textSize(30);
+    textAlign(CENTER, CENTER);
+    text(numMarbles, selectHole.getX(), selectHole.getY());
 }
 
 function winner() {

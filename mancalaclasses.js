@@ -14,7 +14,7 @@ class Player {
 
 function createPlayers() {
     p1 = new Player(board[6], true);
-    p2 = new Player(board[13], false)
+    p2 = new Player(board[13], false);
 }
 
 class Hole {
@@ -32,9 +32,9 @@ class Hole {
         if (dist(x, y, this.x, this.y) < this.d / 2) {
             console.log("I am hole #" + " " + hole);
             if (p1Turn) {
-                p1.playerTurn(hole)
+                p1.playerTurn(hole);
             } else {
-                p2.playerTurn(hole)
+                p2.playerTurn(hole);
             }
         }
     }

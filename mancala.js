@@ -1,8 +1,8 @@
 let board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 let height = 500;
 let width = 500;
-let baseWidth = width * .9
-let baseHeight = baseWidth / 4
+let baseWidth = width * .9;
+let baseHeight = baseWidth / 4;
 let baseX = width / 2 - baseWidth / 2;
 let baseY = height / 2 - baseHeight / 2;
 let bottomHoles = [];
@@ -51,11 +51,13 @@ function mouseClicked() {
 }
 
 let shift;
-let netMove
-function turn(position) {
+let netMove;
+let isFirst = true;
+function turn(position) { 
     let marbles = board[position];
-    netMove = position + marbles
-    if (board[position] > 1) {
+    netMove = position + marbles;
+    if (isFirst && board[position] > 0) {
+        isFirst = false;
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
@@ -63,27 +65,36 @@ function turn(position) {
             drawMarbles();
         }
         console.log(board);
-        console.log('finished')
-        netMove = (position + marbles + shift) % 14
+        console.log('finished');
+        netMove = (position + marbles + shift) % 14;
+        console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
+        goAgain();
+    } else if (board[position] > 1) {
+        board[position] = 0;
+        shift = 0;
+        for (let i = position + 1; i <= netMove; i++) {
+            setTimeout(moveMarble(i), 5000);
+            drawMarbles();
+        }
+        console.log(board);
+        console.log('finished');
+        netMove = (position + marbles + shift) % 14;
         console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
         goAgain();
     } else {
         p1Turn = !p1Turn;
-        console.log("other players turn")
+        isFirst = true;
+        console.log("other players turn");
         console.log(p1Turn);
     }
     gameOver();
-
-    //console.log(board);
-    
-
 }
 
 function moveMarble(i) {
-    if (p1Turn && i != 13) {
+    if (p1Turn && i%14 != 13) {
         board[(i) % 14]++;
         console.log("marble placed at hole " + i%14);
-    } else if (!p1Turn && i != 6) {
+    } else if (!p1Turn && i%14 != 6) {
         board[(i) % 14]++;
         console.log("marble placed at hole " + i%14);
     } else {
@@ -100,6 +111,7 @@ function goAgain() {
         turn(netMove);
     } else {
         console.log('i should stop');
+        isFirst = true;
     }
 }
 
@@ -124,7 +136,7 @@ function checkSpot(position) {
 
 function gameOver() {
     let bottomFilled = false;
-    let topFilled = false
+    let topFilled = false;
     for(let i = 0; i < 6; i++) {
         if(board[i] != 0) {
             bottomFilled = true;
