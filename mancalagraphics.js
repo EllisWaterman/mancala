@@ -2,7 +2,7 @@ function drawBoard() {
     drawBase();
     drawHoles();
     drawGoals();
-    
+
 }
 
 function drawHoles() {
@@ -38,9 +38,9 @@ function drawMarble(hole, numMarbles) {
         x = ((Math.random() * 2 - 1) * (Math.sqrt((selectHole.getD() / 2) ** 2 - (y - selectHole.getY()) ** 2) - (selectHole.getD() * .15))) + selectHole.getX()
         circle(x, y, selectHole.getD() * .3);
 
-        
+
     }
-    
+
 }
 
 function drawNumMarbles(hole, numMarbles) {
@@ -50,7 +50,7 @@ function drawNumMarbles(hole, numMarbles) {
     strokeWeight(5)
     textSize(30);
     textAlign(CENTER, CENTER);
-    text(numMarbles, selectHole.getX(), selectHole.getY() );
+    text(numMarbles, selectHole.getX(), selectHole.getY());
 }
 
 function topRow() {
@@ -86,5 +86,21 @@ function drawGoals() {
         fill(70, 29, 16);
         rect(goalX, baseY + baseHeight / 4, sectionWidth * .8, baseHeight * .5);
         goalX += sectionWidth * 7;
+    }
+}
+
+function winner() {
+    fill('black');
+    stroke("white");
+    strokeWeight(5);
+    textSize(30);
+    textAlign(CENTER, CENTER);
+    if (board[6] > board[13]) {
+        text("Player 1 won!", width / 2, height / 2);
+    }
+    if (board[6] < board[13]) {
+        text("Player 2 won!", width / 2, height / 2);
+    } else {
+        text("It's a tie!", width / 2, height / 2);
     }
 }

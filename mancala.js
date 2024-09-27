@@ -23,15 +23,13 @@ function setup() {
 }
 
 /** This function redraws the sketch multiple times a second. */
-function draw() {
+// function draw() {
 
-}
+// }
 
 function makeHoleArr() {
-
     for (let i = 0; i < bottomHoles.length; i++) {
         holeArr.push(bottomHoles[i]);
-
     }
     for (let i = topHoles.length - 1; i > -1; i--) {
         holeArr.push(topHoles[i]);
@@ -41,46 +39,53 @@ function makeHoleArr() {
 }
 
 function mouseClicked() {
-    for (let i = 0; i < holeArr.length; i++) {
-        holeArr[i].clicked(mouseX, mouseY, i);
+    let isClicked = false
+    if (!isClicked) {
+        isClicked = true
+        for (let i = 0; i < holeArr.length; i++) {
+            holeArr[i].clicked(mouseX, mouseY, i);
+        }
     }
+    isClicked = false
     // add protections for turn and turn off mouseclicked when turn is running.
 }
 
 let shift;
+let netMove
 function turn(position) {
     let marbles = board[position];
-    let netMove = position + marbles
+    netMove = position + marbles
     if (board[position] > 1) {
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
-            setTimeout(moveMarble(i, netMove), 5000);
+            setTimeout(moveMarble(i), 5000);
             drawMarbles();
         }
         console.log(board);
         console.log('finished')
         netMove = (position + marbles + shift) % 14
         console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
-        goAgain(netMove);
+        goAgain();
     } else {
         p1Turn = !p1Turn;
         console.log("other players turn")
         console.log(p1Turn);
     }
+    gameOver();
 
     //console.log(board);
     
 
 }
 
-function moveMarble(i, netMove) {
+function moveMarble(i) {
     if (p1Turn && i != 13) {
         board[(i) % 14]++;
-        console.log("marble placed at hole " + i);
+        console.log("marble placed at hole " + i%14);
     } else if (!p1Turn && i != 6) {
         board[(i) % 14]++;
-        console.log("marble placed at hole " + i);
+        console.log("marble placed at hole " + i%14);
     } else {
         shift++;
         netMove++;
@@ -88,7 +93,7 @@ function moveMarble(i, netMove) {
     }
 }
 
-function goAgain(netMove) {
+function goAgain() {
     if (netMove != 6 && p1Turn) {
         turn(netMove);
     } else if (netMove != 13 && !p1Turn) {
@@ -102,7 +107,7 @@ function checkSpot(position) {
     if (p1Turn && position >= 7) {
         console.log("Not your side");
         return false;
-    } else if (!p1Turn && position <= 7) {
+    } else if (!p1Turn && position <= 6) {
         console.log("Not your side");
         return false;
     } else if (position == 6 || position == 13) {
@@ -115,4 +120,35 @@ function checkSpot(position) {
         return true;
     }
 
+}
+
+function gameOver() {
+    let bottomFilled = false;
+    let topFilled = false
+    for(let i = 0; i < 6; i++) {
+        if(board[i] != 0) {
+            bottomFilled = true;
+        }
+    }
+    for(let i = 7; i < 13; i++) {
+        if(board[i] != 0) {
+            topFilled = true;
+        }
+    }
+    if (!topFilled || !bottomFilled) {
+        collectLeftovers();
+        winner();   
+    }
+}
+
+function collectLeftovers() {
+    for(let i = 0; i < 6; i++) {
+        board[6] += board[i];
+        board[i] = 0;
+    }
+    for(let i = 7; i < 13; i++) {
+        board[13] += board[i];
+        board[i] = 0;
+    }
+    drawMarbles();
 }
