@@ -53,27 +53,16 @@ function mouseClicked() {
 let shift;
 let netMove;
 let isFirst = true;
+let marbles;
 function turn(position) { 
-    let marbles = board[position];
+    marbles = board[position];
     netMove = position + marbles;
-    if (isFirst && board[position] > 0) {
+    if ((isFirst && board[position] > 0) || board[position] > 1) {
         isFirst = false;
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
-            setTimeout(moveMarble(i), 5000);
-            drawMarbles();
-        }
-        console.log(board);
-        console.log('finished');
-        netMove = (position + marbles + shift) % 14;
-        console.log("pos" + " " + position + "marbles" + " " + marbles + "shift" + " " + shift);
-        goAgain();
-    } else if (board[position] > 1) {
-        board[position] = 0;
-        shift = 0;
-        for (let i = position + 1; i <= netMove; i++) {
-            setTimeout(moveMarble(i), 5000);
+            setInterval(moveMarble, 5000, i);
             drawMarbles();
         }
         console.log(board);
@@ -90,17 +79,21 @@ function turn(position) {
     gameOver();
 }
 
+let marblesLeft = marbles;
 function moveMarble(i) {
-    if (p1Turn && i%14 != 13) {
-        board[(i) % 14]++;
-        console.log("marble placed at hole " + i%14);
-    } else if (!p1Turn && i%14 != 6) {
-        board[(i) % 14]++;
-        console.log("marble placed at hole " + i%14);
+    if (marblesLeft == 0) {
+        clearInterval()
     } else {
-        shift++;
-        netMove++;
-        console.log("Goal skipped");
+        if ((p1Turn && i%14 != 13) || (!p1Turn && i%14 != 6)) {
+            board[(i) % 14]++;
+            marblesLeft --;
+            console.log("marble placed at hole " + i%14);
+            console.log("there are " + marblesLeft + "marbles left");
+        } else {
+            shift++;
+            netMove++;
+            console.log("Goal skipped");
+        }
     }
 }
 
