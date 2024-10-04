@@ -81,7 +81,7 @@ function drawNumMarbles(hole, numMarbles) {
     fill('white');
     stroke("black");
     strokeWeight(5)
-    textSize(30);
+    textSize(selectHole.getD() * .7);
     textAlign(CENTER, CENTER);
     text(numMarbles, selectHole.getX(), selectHole.getY());
 }

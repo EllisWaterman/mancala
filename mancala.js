@@ -1,6 +1,6 @@
 let board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 let height = 500;
-let width = 500;
+let width = 1000;
 let baseWidth = width * .9;
 let baseHeight = baseWidth / 4;
 let baseX = width / 2 - baseWidth / 2;
@@ -18,14 +18,13 @@ function setup() {
     createPlayers();
     makeHoleArr();
     drawMarbles();
-
-    // drawMarbles(0,4);
 }
 
 /** This function redraws the sketch multiple times a second. */
 // function draw() {
 
 // }
+
 
 function makeHoleArr() {
     for (let i = 0; i < bottomHoles.length; i++) {
