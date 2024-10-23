@@ -1,6 +1,6 @@
 let board = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0];
 let height = 500;
-let width = 1000;
+let width = 700;
 let baseWidth = width * .9;
 let baseHeight = baseWidth / 4;
 let baseX = width / 2 - baseWidth / 2;
@@ -53,6 +53,7 @@ let shift;
 let netMove;
 let isFirst = true;
 let marbles;
+
 function turn(position) { 
     marbles = board[position];
     netMove = position + marbles;
@@ -61,7 +62,8 @@ function turn(position) {
         board[position] = 0;
         shift = 0;
         for (let i = position + 1; i <= netMove; i++) {
-            setInterval(moveMarble, 5000, i);
+            //setInterval(moveMarble, 5000, i);
+            moveMarble(i);
             drawMarbles();
         }
         console.log(board);
@@ -80,9 +82,9 @@ function turn(position) {
 
 let marblesLeft = marbles;
 function moveMarble(i) {
-    if (marblesLeft == 0) {
-        clearInterval()
-    } else {
+    // if (marblesLeft == 0) {
+    //     clearInterval()
+    // } else {
         if ((p1Turn && i%14 != 13) || (!p1Turn && i%14 != 6)) {
             board[(i) % 14]++;
             marblesLeft --;
@@ -93,7 +95,7 @@ function moveMarble(i) {
             netMove++;
             console.log("Goal skipped");
         }
-    }
+    //}
 }
 
 function goAgain() {
